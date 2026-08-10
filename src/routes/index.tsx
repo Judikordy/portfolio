@@ -37,8 +37,6 @@ import focusShiftDemoData from "@/assets/focusshift-demo.mp4.asset.json";
 import ecommerceImage from "@/assets/project-ecommerce.png";
 import travelImage from "@/assets/project-travel.png";
 
-const focusShiftDemo = { url: focusShiftDemoData.url };
-
 const CV_URL = "/JudiElkordy_Resume.pdf";
 const LINKEDIN_URL = "https://www.linkedin.com/in/judi-elkordy-a26357281/";
 
