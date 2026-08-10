@@ -81,14 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Portfolio of Judi Elkordy, a Computer Science & AI student and software engineer focused on web development, test automation, and developer productivity tools.",
+          "Portfolio of Judi Elkordy, a Computer Science & AI graduate and software engineer focused on web development, test automation, and developer productivity tools.",
       },
       { name: "author", content: "Judi Elkordy" },
       { property: "og:title", content: "Judi Elkordy | Software Engineer & QA Specialist" },
       {
         property: "og:description",
         content:
-          "Portfolio of Judi Elkordy, a Computer Science & AI student and software engineer focused on web development, test automation, and developer productivity tools.",
+          "Portfolio of Judi Elkordy, a Computer Science & AI graduate and software engineer focused on web development, test automation, and developer productivity tools.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

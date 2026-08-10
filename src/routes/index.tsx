@@ -33,8 +33,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import heroImage from "@/assets/hero-illustration.png";
 import focusShiftPoster from "@/assets/poster.jpeg";
-import focusShiftDemoData from "@/assets/focusshift-demo.mp4.asset.json";
-import ecommerceImage from "@/assets/project-ecommerce.png";
+import focusShiftDemo from "@/assets/demo.mp4";
+import ecommerceImage from "@/assets/freshcart.png";
+import freshCartDemo from "@/assets/freshcart.mp4";
 import travelImage from "@/assets/project-travel.png";
 
 const CV_URL = "/JudiElkordy_Resume.pdf";
@@ -47,13 +48,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Portfolio of Judi Elkordy, a Computer Science & AI student and software engineer focused on web development, test automation, and developer productivity tools.",
+          "Portfolio of Judi Elkordy, a Computer Science & AI graduate and software engineer focused on web development, test automation, and developer productivity tools.",
       },
       { property: "og:title", content: "Judi Elkordy | Software Engineer & QA Specialist" },
       {
         property: "og:description",
         content:
-          "Portfolio of Judi Elkordy, a Computer Science & AI student and software engineer focused on web development, test automation, and developer productivity tools.",
+          "Portfolio of Judi Elkordy, a Computer Science & AI graduate and software engineer focused on web development, test automation, and developer productivity tools.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: heroImage },
@@ -62,7 +63,7 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content:
-          "Portfolio of Judi Elkordy, a Computer Science & AI student and software engineer focused on web development, test automation, and developer productivity tools.",
+          "Portfolio of Judi Elkordy, a Computer Science & AI graduate and software engineer focused on web development, test automation, and developer productivity tools.",
       },
       { name: "twitter:image", content: heroImage },
     ],
@@ -123,7 +124,8 @@ const projects = [
     description:
       "A VS Code extension that monitors developer inactivity and workspace focus changes in real time. It automatically restores context after interruptions, reopens the last edited file, restores cursor position, and provides configurable ambient audio feedback — all using local storage with privacy-first design.",
     image: focusShiftPoster,
-    video: focusShiftDemo.url,
+    imageFit: "object-contain bg-[#0b1e3d]",
+    video: focusShiftDemo,
     tech: ["TypeScript", "VS Code Extension API", "Node.js", "Event-Driven Architecture"],
     links: {
       github: "https://github.com/Mariammazen147/FocusShift",
@@ -142,7 +144,8 @@ const projects = [
     description:
       "A responsive e-commerce application built with React and Tailwind CSS. It features product listing, dynamic rendering, cart management, and REST API integration using Axios and modern React Hooks.",
     image: ecommerceImage,
-    video: null as string | null,
+    imageFit: "object-cover",
+    video: freshCartDemo,
     tech: ["React.js", "JavaScript ES6+", "Tailwind CSS", "REST APIs", "Axios", "React Hooks"],
     links: {
       github: "https://github.com/Judikordy/ecommerce_react",
@@ -161,6 +164,7 @@ const projects = [
     description:
       "A scalable travel booking system designed with service-oriented architecture. Includes multilingual notifications, third-party API integration, and UML-modeled backend design following SOLID principles.",
     image: travelImage,
+    imageFit: "object-cover",
     video: null as string | null,
     tech: ["Java", "UML", "SOA", "REST APIs", "System Design"],
     links: {
@@ -289,7 +293,7 @@ function Index() {
                   Hi, I'm <span className="text-accent">Judi Elkordy</span>
                 </h1>
                 <p className="text-lg text-muted-foreground sm:text-xl">
-                  Computer Science & AI student at Cairo University. I build web applications,
+                  Computer Science & AI graduate from Cairo University. I build web applications,
                   automate tests, and craft developer tools that make engineering teams more
                   productive.
                 </p>
@@ -369,8 +373,8 @@ function Index() {
                   About Me
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  I'm a dedicated Computer Science and Artificial Intelligence student at Cairo
-                  University, expected to graduate in June 2026. My journey in software engineering
+                  I graduated with a B.Sc. in Computer Science and Artificial Intelligence from Cairo
+                  University in June 2026. My journey in software engineering
                   spans building full-stack web applications, designing robust test automation
                   suites, and creating developer productivity tools like VS Code extensions.
                 </p>
@@ -411,7 +415,7 @@ function Index() {
                   </div>
                   <div>
                     <p className="font-semibold text-foreground">B.Sc. in Computer Science & AI</p>
-                    <p className="text-sm text-muted-foreground">Expected Graduation: June 2026</p>
+                    <p className="text-sm text-muted-foreground">Graduated: June 2026</p>
                   </div>
                   <div className="inline-flex items-center rounded-md bg-accent/10 px-2.5 py-1 text-sm font-medium text-accent-foreground">
                     GPA: 3.09 — Very Good
@@ -480,7 +484,7 @@ function Index() {
                       alt={`${project.title} project preview`}
                       width={800}
                       height={600}
-                      className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${project.video ? "object-contain bg-[#0b1e3d]" : "object-cover"}`}
+                      className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${project.imageFit}`}
                       loading="lazy"
                     />
                   </div>
@@ -713,7 +717,7 @@ function Index() {
                     <div>
                       <p className="font-medium text-foreground">Education</p>
                       <p className="text-sm text-muted-foreground">
-                        Cairo University, B.Sc. CS & AI (Expected 2026)
+                        Cairo University, B.Sc. CS & AI (June 2026)
                       </p>
                     </div>
                   </div>
