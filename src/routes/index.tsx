@@ -33,7 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-import heroImage from "@/assets/hero-illustration.png";
+import heroImage from "@/assets/hero.png";
 import focusShiftPoster from "@/assets/poster.jpeg";
 import focusShiftDemo from "@/assets/demo.mp4";
 import ecommerceImage from "@/assets/freshcart.png";
