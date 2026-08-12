@@ -24,6 +24,8 @@ import {
   Database,
   Download,
   PlayCircle,
+  ShieldCheck,
+  Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -90,6 +92,27 @@ const skills = [
     category: "Frameworks & Technologies",
     icon: <Layers className="h-5 w-5" />,
     items: ["React", "Node.js", "Spring Boot", "Tailwind CSS"],
+  },
+  {
+    category: "AI & LLM Technologies",
+    icon: <Brain className="h-5 w-5" />,
+    items: [
+      "Large Language Models (LLMs)",
+      "Prompt Engineering",
+      "LLM API Integration",
+      "AI-Assisted Development",
+    ],
+  },
+  {
+    category: "Software Security",
+    icon: <ShieldCheck className="h-5 w-5" />,
+    items: [
+      "Secure Coding Practices",
+      "Authentication & Authorization",
+      "Data Privacy",
+      "API Security",
+      "OWASP Principles",
+    ],
   },
   {
     category: "Testing & QA",
@@ -418,7 +441,7 @@ function Index() {
                     <p className="text-sm text-muted-foreground">Graduated: June 2026</p>
                   </div>
                   <div className="inline-flex items-center rounded-md bg-accent/10 px-2.5 py-1 text-sm font-medium text-accent-foreground">
-                    GPA: 3.09 — Very Good
+                    GPA: 3.09 — Very Good with Honours
                   </div>
                 </CardContent>
               </Card>
