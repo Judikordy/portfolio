@@ -209,6 +209,7 @@ const certifications = [
   "Red Hat Linux Training Course",
   "Java EE Course",
   "ISTQB® Foundation Level Certification in Software Testing — ESTB (2025)",
+  "AI Track — Tech Nights Program, IEEE Suez Canal University Student Branch (Ramadan 2026)",
 ];
 
 function Index() {
