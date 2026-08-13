@@ -221,7 +221,7 @@ const certifications = [
   },
   {
     title: "Java EE Course",
-    issuer: "",
+    issuer: "RedHat",
     year: "",
   },
   {
