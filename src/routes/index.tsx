@@ -33,12 +33,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-import heroImage from "@/assets/hero.png";
-import focusShiftPoster from "@/assets/poster.jpeg";
+import heroImage from "@/assets/hero.webp";
+import focusShiftPoster from "@/assets/poster.webp";
 import focusShiftDemo from "@/assets/demo.mp4";
-import ecommerceImage from "@/assets/freshcart.png";
+import ecommerceImage from "@/assets/freshcart.webp";
 import freshCartDemo from "@/assets/freshcart.mp4";
-import travelImage from "@/assets/project-travel.png";
+import travelImage from "@/assets/project-travel.webp";
 
 const CV_URL = "/JudiElkordy_Resume.pdf";
 const LINKEDIN_URL = "https://www.linkedin.com/in/judi-elkordy-a26357281/";
