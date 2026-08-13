@@ -204,12 +204,54 @@ const projects = [
 ];
 
 const certifications = [
-  "React Development Course — Route Academy (2025)",
-  "RedHat: DevOps Tools Exposure: Jenkins, Docker, Podman, OpenShift",
-  "Red Hat Linux Training Course",
-  "Java EE Course",
-  "ISTQB® Foundation Level Certification in Software Testing — ESTB (2025)",
-  "AI Track — Tech Nights Program, IEEE Suez Canal University Student Branch (Ramadan 2026)",
+  {
+    title: "React Development Course",
+    issuer: "Route Academy",
+    year: "2025",
+  },
+  {
+    title: "DevOps Tools Exposure: Jenkins, Docker, Podman, OpenShift",
+    issuer: "RedHat",
+    year: "",
+  },
+  {
+    title: "Red Hat Linux Training Course",
+    issuer: "RedHat",
+    year: "",
+  },
+  {
+    title: "Java EE Course",
+    issuer: "",
+    year: "",
+  },
+  {
+    title: "ISTQB® Foundation Level Certification in Software Testing",
+    issuer: "ESTB",
+    year: "2025",
+  },
+  {
+    title: "AI Track — Tech Nights Program",
+    issuer: "IEEE Suez Canal University Student Branch",
+    year: "Ramadan 2026",
+  },
+  {
+    title: "SprintUp — Web Development Fundamentals",
+    issuer: "Sprints",
+    year: "",
+    id: "ID: SPR-T7F53P",
+  },
+  {
+    title: "SprintUp — Programming with Python",
+    issuer: "Sprints",
+    year: "",
+    id: "ID: SPR-M62V3T",
+  },
+  {
+    title: "SprintUp — UI/UX Design",
+    issuer: "Sprints",
+    year: "",
+    id: "ID: SPR-N46T67",
+  },
 ];
 
 function Index() {
@@ -645,10 +687,24 @@ function Index() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {certifications.map((cert) => (
-                <Card key={cert} className="h-full">
+                <Card key={cert.title} className="h-full">
                   <CardContent className="flex h-full items-start gap-3 p-5">
                     <Award className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
-                    <p className="text-sm font-medium text-foreground">{cert}</p>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-foreground">{cert.title}</p>
+                      {cert.issuer && (
+                        <p className="text-xs text-muted-foreground">
+                          {cert.issuer}
+                          {cert.year ? ` · ${cert.year}` : ""}
+                        </p>
+                      )}
+                      {!cert.issuer && cert.year && (
+                        <p className="text-xs text-muted-foreground">{cert.year}</p>
+                      )}
+                      {cert.id && (
+                        <p className="text-xs text-muted-foreground/60">{cert.id}</p>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               ))}
