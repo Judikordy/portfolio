@@ -60,32 +60,53 @@ function useReveal(threshold = 0.15) {
 // Typed text hook
 function useTyped(words: string[], speed = 80, pause = 1800) {
   const [display, setDisplay] = useState("");
-  const [wordIdx, setWordIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [deleting, setDeleting] = useState(false);
+  const state = useRef({ wordIdx: 0, charIdx: 0, deleting: false, pausing: false });
+
   useEffect(() => {
-    const current = words[wordIdx];
-    const timeout = setTimeout(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+
+    function tick() {
+      const { wordIdx, charIdx, deleting, pausing } = state.current;
+      const current = words[wordIdx];
+
+      if (pausing) {
+        state.current.pausing = false;
+        state.current.deleting = true;
+        timeout = setTimeout(tick, speed / 2);
+        return;
+      }
+
       if (!deleting) {
-        setDisplay(current.slice(0, charIdx + 1));
-        if (charIdx + 1 === current.length) {
-          setTimeout(() => setDeleting(true), pause);
+        const next = charIdx + 1;
+        setDisplay(current.slice(0, next));
+        if (next === current.length) {
+          state.current.charIdx = next;
+          state.current.pausing = true;
+          timeout = setTimeout(tick, pause);
         } else {
-          setCharIdx((c) => c + 1);
+          state.current.charIdx = next;
+          timeout = setTimeout(tick, speed);
         }
       } else {
-        setDisplay(current.slice(0, charIdx - 1));
-        if (charIdx - 1 === 0) {
-          setDeleting(false);
-          setWordIdx((w) => (w + 1) % words.length);
-          setCharIdx(0);
+        const next = charIdx - 1;
+        setDisplay(current.slice(0, next));
+        if (next === 0) {
+          state.current.charIdx = 0;
+          state.current.deleting = false;
+          state.current.wordIdx = (wordIdx + 1) % words.length;
+          timeout = setTimeout(tick, speed);
         } else {
-          setCharIdx((c) => c - 1);
+          state.current.charIdx = next;
+          timeout = setTimeout(tick, speed / 2);
         }
       }
-    }, deleting ? speed / 2 : speed);
+    }
+
+    timeout = setTimeout(tick, speed);
     return () => clearTimeout(timeout);
-  }, [charIdx, deleting, wordIdx, words, speed, pause]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return display;
 }
 
