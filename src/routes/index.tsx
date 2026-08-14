@@ -587,7 +587,7 @@ function Index() {
                   ))}
                 </div>
               </div>
-              <Card className="h-fit">
+              <Card className="h-fit neon-hover">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <GraduationCap className="h-5 w-5 text-accent" />
@@ -770,7 +770,7 @@ function Index() {
                 Teaching and mentoring the next generation of developers.
               </p>
             </div>
-            <Card className="mx-auto max-w-3xl">
+            <Card className="mx-auto max-w-3xl neon-hover">
               <CardHeader>
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
@@ -918,7 +918,7 @@ function Index() {
                   </a>
                 </div>
               </div>
-              <Card className="h-fit">
+              <Card className="h-fit neon-hover">
                 <CardHeader>
                   <CardTitle>Quick facts</CardTitle>
                 </CardHeader>
@@ -963,6 +963,20 @@ function Index() {
           </div>
         </section>
       </main>
+
+      {/* Scroll to top button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Scroll to top"
+        className="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-accent/40 bg-background/90 text-accent shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-accent hover:text-accent-foreground"
+        style={{
+          opacity: scrollProgress > 5 ? 1 : 0,
+          pointerEvents: scrollProgress > 5 ? "auto" : "none",
+          boxShadow: scrollProgress > 5 ? "0 0 16px 3px color-mix(in oklch, var(--accent) 40%, transparent)" : "none",
+        }}
+      >
+        <ChevronDown className="h-5 w-5 rotate-180" />
+      </button>
 
       {/* Footer */}
       <footer className="border-t border-border bg-background px-4 py-8 sm:px-6 lg:px-8">
