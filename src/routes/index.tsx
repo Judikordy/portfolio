@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Github,
   Linkedin,
@@ -39,6 +39,55 @@ import focusShiftDemo from "@/assets/demo.mp4";
 import ecommerceImage from "@/assets/freshcart.webp";
 import freshCartDemo from "@/assets/freshcart.mp4";
 import travelImage from "@/assets/project-travel.webp";
+
+// Scroll-triggered reveal hook
+function useReveal(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
+// Typed text hook
+function useTyped(words: string[], speed = 80, pause = 1800) {
+  const [display, setDisplay] = useState("");
+  const [wordIdx, setWordIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  useEffect(() => {
+    const current = words[wordIdx];
+    const timeout = setTimeout(() => {
+      if (!deleting) {
+        setDisplay(current.slice(0, charIdx + 1));
+        if (charIdx + 1 === current.length) {
+          setTimeout(() => setDeleting(true), pause);
+        } else {
+          setCharIdx((c) => c + 1);
+        }
+      } else {
+        setDisplay(current.slice(0, charIdx - 1));
+        if (charIdx - 1 === 0) {
+          setDeleting(false);
+          setWordIdx((w) => (w + 1) % words.length);
+          setCharIdx(0);
+        } else {
+          setCharIdx((c) => c - 1);
+        }
+      }
+    }, deleting ? speed / 2 : speed);
+    return () => clearTimeout(timeout);
+  }, [charIdx, deleting, wordIdx, words, speed, pause]);
+  return display;
+}
 
 const CV_URL = "/JudiElkordy_Resume.pdf";
 const LINKEDIN_URL = "https://www.linkedin.com/in/judi-elkordy-a26357281/";
@@ -256,6 +305,15 @@ const certifications = [
 
 function Index() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const typed = useTyped(["Web Applications", "Test Automation", "Developer Tools", "Clean Code"]);
+
+  // Reveal refs for each section
+  const aboutReveal = useReveal();
+  const skillsReveal = useReveal();
+  const projectsReveal = useReveal();
+  const experienceReveal = useReveal();
+  const certsReveal = useReveal();
+  const contactReveal = useReveal();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -345,9 +403,14 @@ function Index() {
       <main>
         {/* Hero Section */}
         <section id="hero" className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          {/* Animated background blobs */}
+          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-accent/10 blur-[120px] animate-pulse" />
+            <div className="absolute -bottom-40 -right-20 h-[500px] w-[500px] rounded-full bg-accent/5 blur-[100px] animate-pulse delay-1000" />
+          </div>
           <div className="mx-auto max-w-7xl">
             <div className="grid items-center gap-12 lg:grid-cols-2">
-              <div className="space-y-6">
+              <div className="space-y-6 animate-in fade-in slide-in-from-left-8 duration-700">
                 <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-medium text-accent-foreground">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
@@ -358,16 +421,22 @@ function Index() {
                 <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
                   Hi, I'm <span className="text-accent">Judi Elkordy</span>
                 </h1>
-                <p className="text-lg text-muted-foreground sm:text-xl">
-                  Computer Science & AI graduate from Cairo University. I build web applications,
-                  automate tests, and craft developer tools that make engineering teams more
-                  productive.
+                <p className="text-lg text-muted-foreground sm:text-xl min-h-[2rem]">
+                  I build{" "}
+                  <span className="text-accent font-semibold">
+                    {typed}
+                    <span className="animate-pulse">|</span>
+                  </span>
+                </p>
+                <p className="text-base text-muted-foreground">
+                  Computer Science & AI graduate from Cairo University. Focused on web development,
+                  test automation, and developer tools that make engineering teams more productive.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <Button asChild size="lg">
+                  <Button asChild size="lg" className="transition-transform hover:scale-105">
                     <a href="#projects">View Projects</a>
                   </Button>
-                  <Button asChild variant="outline" size="lg">
+                  <Button asChild variant="outline" size="lg" className="transition-transform hover:scale-105">
                     <a
                       href="https://github.com/Judikordy"
                       target="_blank"
@@ -377,13 +446,13 @@ function Index() {
                       GitHub
                     </a>
                   </Button>
-                  <Button asChild variant="secondary" size="lg">
+                  <Button asChild variant="secondary" size="lg" className="transition-transform hover:scale-105">
                     <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
                       <Linkedin className="mr-2 h-4 w-4" />
                       LinkedIn
                     </a>
                   </Button>
-                  <Button asChild variant="outline" size="lg">
+                  <Button asChild variant="outline" size="lg" className="transition-transform hover:scale-105">
                     <a href={CV_URL} download>
                       <Download className="mr-2 h-4 w-4" />
                       Download CV
@@ -405,7 +474,7 @@ function Index() {
                   </span>
                 </div>
               </div>
-              <div className="relative">
+              <div className="relative animate-in fade-in slide-in-from-right-8 duration-700 delay-200">
                 <div
                   className="absolute -inset-4 rounded-full bg-accent/10 blur-3xl"
                   aria-hidden="true"
@@ -415,7 +484,7 @@ function Index() {
                   alt="Judi Elkordy - Software engineer working at a desk with code on the laptop screen"
                   width={1200}
                   height={800}
-                  className="relative rounded-2xl border border-border/50 shadow-2xl"
+                  className="relative rounded-2xl border border-border/50 shadow-2xl transition-transform duration-500 hover:scale-[1.02]"
                   loading="eager"
                 />
               </div>
@@ -432,7 +501,10 @@ function Index() {
 
         {/* About Section */}
         <section id="about" className="border-t border-border px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
+          <div
+            ref={aboutReveal.ref}
+            className={`mx-auto max-w-7xl transition-all duration-700 ${aboutReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
             <div className="grid gap-12 lg:grid-cols-3">
               <div className="lg:col-span-2 space-y-6">
                 <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -494,7 +566,10 @@ function Index() {
 
         {/* Skills Section */}
         <section id="skills" className="bg-muted/30 px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
+          <div
+            ref={skillsReveal.ref}
+            className={`mx-auto max-w-7xl transition-all duration-700 ${skillsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 Technical Skills
@@ -505,7 +580,7 @@ function Index() {
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {skills.map((group) => (
-                <Card key={group.category} className="overflow-hidden">
+                <Card key={group.category} className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-accent/40">
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg">
                       <span className="text-accent">{group.icon}</span>
@@ -529,7 +604,10 @@ function Index() {
 
         {/* Projects Section */}
         <section id="projects" className="border-t border-border px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
+          <div
+            ref={projectsReveal.ref}
+            className={`mx-auto max-w-7xl transition-all duration-700 ${projectsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 Featured Projects
@@ -542,7 +620,7 @@ function Index() {
               {projects.map((project) => (
                 <Card
                   key={project.title}
-                  className="group flex flex-col overflow-hidden border-border/50"
+                  className="group flex flex-col overflow-hidden border-border/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-accent/40"
                 >
                   <div className="aspect-4/3 overflow-hidden bg-muted">
                     <img
@@ -630,7 +708,10 @@ function Index() {
 
         {/* Experience Section */}
         <section id="experience" className="bg-muted/30 px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
+          <div
+            ref={experienceReveal.ref}
+            className={`mx-auto max-w-7xl transition-all duration-700 ${experienceReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 Experience
@@ -677,7 +758,10 @@ function Index() {
 
         {/* Certifications Section */}
         <section id="certifications" className="border-t border-border px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
+          <div
+            ref={certsReveal.ref}
+            className={`mx-auto max-w-7xl transition-all duration-700 ${certsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 Certifications & Courses
@@ -688,7 +772,7 @@ function Index() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {certifications.map((cert) => (
-                <Card key={cert.title} className="h-full">
+                <Card key={cert.title} className="h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-accent/40">
                   <CardContent className="flex h-full items-start gap-3 p-5">
                     <Award className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
                     <div className="space-y-1">
@@ -715,7 +799,10 @@ function Index() {
 
         {/* Contact Section */}
         <section id="contact" className="bg-muted/30 px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
+          <div
+            ref={contactReveal.ref}
+            className={`mx-auto max-w-7xl transition-all duration-700 ${contactReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
             <div className="grid gap-12 lg:grid-cols-2">
               <div className="space-y-6">
                 <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
