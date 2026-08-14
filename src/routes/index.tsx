@@ -34,7 +34,7 @@ import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import heroImage from "@/assets/hero.webp";
-import focusShiftPoster from "@/assets/poster.webp";
+import focusShift from "@/assets/focusshift.webp";
 import focusShiftDemo from "@/assets/demo.mp4";
 import ecommerceImage from "@/assets/freshcart.webp";
 import freshCartDemo from "@/assets/freshcart.mp4";
@@ -146,7 +146,7 @@ const projects = [
     subtitle: "VS Code Productivity Extension",
     description:
       "A VS Code extension that monitors developer inactivity and workspace focus changes in real time. It automatically restores context after interruptions, reopens the last edited file, restores cursor position, and provides configurable ambient audio feedback — all using local storage with privacy-first design.",
-    image: focusShiftPoster,
+    image: focusShift,
     imageFit: "object-contain bg-[#0b1e3d]",
     video: focusShiftDemo,
     tech: ["TypeScript", "VS Code Extension API", "Node.js", "Event-Driven Architecture"],
