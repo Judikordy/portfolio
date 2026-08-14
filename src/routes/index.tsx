@@ -305,7 +305,19 @@ const certifications = [
 
 function Index() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const typed = useTyped(["Web Applications", "Test Automation", "Developer Tools", "Clean Code"]);
+
+  // Scroll progress bar
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Reveal refs for each section
   const aboutReveal = useReveal();
@@ -319,6 +331,13 @@ function Index() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
+        {/* Scroll progress bar */}
+        <div className="absolute bottom-0 left-0 h-[2px] w-full bg-border/30">
+          <div
+            className="h-full bg-gradient-to-r from-accent via-amber-400 to-accent transition-all duration-100 ease-out"
+            style={{ width: `${scrollProgress}%` }}
+          />
+        </div>
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <a href="#" className="text-lg font-bold tracking-tight text-foreground">
             Judi<span className="text-accent">.</span>
@@ -580,7 +599,7 @@ function Index() {
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {skills.map((group) => (
-                <Card key={group.category} className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-accent/40">
+                <Card key={group.category} className="overflow-hidden neon-hover hover:-translate-y-1">
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg">
                       <span className="text-accent">{group.icon}</span>
@@ -620,7 +639,7 @@ function Index() {
               {projects.map((project) => (
                 <Card
                   key={project.title}
-                  className="group flex flex-col overflow-hidden border-border/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-accent/40"
+                  className="group flex flex-col overflow-hidden neon-hover hover:-translate-y-1"
                 >
                   <div className="aspect-4/3 overflow-hidden bg-muted">
                     <img
@@ -772,7 +791,7 @@ function Index() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {certifications.map((cert) => (
-                <Card key={cert.title} className="h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-accent/40">
+                <Card key={cert.title} className="h-full neon-hover hover:-translate-y-1">
                   <CardContent className="flex h-full items-start gap-3 p-5">
                     <Award className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
                     <div className="space-y-1">
