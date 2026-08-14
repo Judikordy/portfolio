@@ -306,6 +306,7 @@ const certifications = [
 function Index() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState("hero");
   const typed = useTyped(["Web Applications", "Test Automation", "Developer Tools", "Clean Code"]);
 
   // Scroll progress bar
@@ -317,6 +318,23 @@ function Index() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Active section tracker
+  useEffect(() => {
+    const sectionIds = ["hero", "about", "skills", "projects", "experience", "certifications", "contact"];
+    const observers: IntersectionObserver[] = [];
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   // Reveal refs for each section
@@ -344,15 +362,28 @@ function Index() {
           </a>
 
           <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent/10 hover:text-foreground"
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace("#", "");
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="relative rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 hover:bg-accent/10 hover:text-foreground"
+                  style={{ color: isActive ? "var(--accent)" : undefined }}
+                >
+                  {item.label}
+                  {/* Neon underbar */}
+                  <span
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] rounded-full transition-all duration-300 ease-out"
+                    style={{
+                      width: isActive ? "80%" : "0%",
+                      background: "var(--accent)",
+                      boxShadow: isActive ? "0 0 8px 2px color-mix(in oklch, var(--accent) 60%, transparent)" : "none",
+                    }}
+                  />
+                </a>
+              );
+            })}
           </nav>
 
           <div className="hidden md:flex items-center gap-2">
@@ -599,7 +630,7 @@ function Index() {
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {skills.map((group) => (
-                <Card key={group.category} className="overflow-hidden neon-hover hover:-translate-y-1">
+                <Card key={group.category} className="overflow-hidden neon-hover">
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg">
                       <span className="text-accent">{group.icon}</span>
@@ -639,7 +670,7 @@ function Index() {
               {projects.map((project) => (
                 <Card
                   key={project.title}
-                  className="group flex flex-col overflow-hidden neon-hover hover:-translate-y-1"
+                  className="group flex flex-col overflow-hidden neon-hover"
                 >
                   <div className="aspect-4/3 overflow-hidden bg-muted">
                     <img
@@ -791,7 +822,7 @@ function Index() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {certifications.map((cert) => (
-                <Card key={cert.title} className="h-full neon-hover hover:-translate-y-1">
+                <Card key={cert.title} className="h-full neon-hover">
                   <CardContent className="flex h-full items-start gap-3 p-5">
                     <Award className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
                     <div className="space-y-1">
