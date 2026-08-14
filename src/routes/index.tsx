@@ -581,6 +581,7 @@ function Index() {
                     {project.video && (
                       <video
                         src={project.video}
+                        poster={project.image}
                         controls
                         preload="metadata"
                         className="w-full rounded-md border border-border/50 bg-black"
